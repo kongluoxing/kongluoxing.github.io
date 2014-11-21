@@ -32,6 +32,19 @@
 
   <!-- analytics -->
   
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-56699069-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+
+ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
 
 </head>
 
@@ -101,7 +114,7 @@
 	
 	<!-- display as entry -->
 		<h3 class="title">
-			<a href="/2014/11/12/out-of-band-management/" >数据中心带外管理</a>
+			<a href="/2014/11/12/out-of-band-management/" >数据中心服务器自动交付及带外管理</a>
 			<span class="date"> Nov 12 2014 </span>
 		</h3>
 	
@@ -113,18 +126,11 @@
 	<div class="col-md-12">
 	  
 	
-	  <h1 id="总体构思">总体构思</h1>
-<p><img src="http://kongluoxing.qiniudn.com/oob_management_summary.png" alt="总体逻辑图"><br>机器从上架到交付用户使用后的维护，总体分为三个阶段：</p>
-<ol>
-<li><strong> 上架 </strong><br>上架阶段主要完成机器上架、加电、扫描录入RFID、位置信息、扫描录入序列号、扫描录入MAC地址、网络准备等。<br>其中RFID储存CI ID，扫描到的序列号和MAC地址关联到此CI；<br>网络准备需要准备两个链路：管理网、生产网。其中管理网用于带外管理，生产网络在执行自动装机时连接管理网，在装机完成后即划回生产网（此处要求网络有动态调整能力）。</li>
-<li><strong> 纳管 </strong><br>此阶段主要是处理上架时的信息，使相关的信息进行关联，形成完整的管理信息以便机器纳管。上架阶段完成时，由于扫描信息的人员，和设置管理IP地址的可能并不是相同的人，因此需要在这个阶段进行匹配关联，方法是通过管理口采集生产网卡MAC的地址，通过采集到的MAC地址与上架阶段录入的MAC地址进行匹配，然后将管理口IP，管理口MAC，与CI ID，序列号等关联起来，使机器具备纳管条件。</li>
-<li><strong> 维护 </strong><br>维护阶段已经可以进行各种带外管理，其中包括控制和监控两部分：<ul>
-<li>控制：可以执行远程自动装机、远程启停、控制台重定向、BIOS设置等功能。<br>远程自动装机可以对目标机器安装指定操作系统，指定分区、网络设置、预装的软件包等，可根据业务系统要求定制安装。<br>控制台重定向可以模拟串口，可实现从机器启动到操作系统启动之间的操作，弥补了以往操作系统出问题只能到现场解决的问题。若对操作系统设置启动参数，还可实现登陆操作系统的功能，可以在操作系统ssh无法连接时提供另一种手段。</li>
-<li>监控：带外监控部分用于弥补在操作系统层面无法采集的信息：功耗、温度、风扇转速、硬件告警等。</li>
-</ul>
-</li>
-</ol>
+	  <div class="alert alert-success"><i class="fa fa-lightbulb-o"></i>  <p>本文介绍了数据中心自动装机以及带外管理等的设想。</p>
+</div>
 
+<h1 id="总体构思">总体构思</h1>
+<p><img src="http://kongluoxing.qiniudn.com/oob_management_summary.png" alt="总体逻辑图"><br>
 	
 	</div>
 	
@@ -197,21 +203,29 @@
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/Cobbler/">Cobbler<span>1</span></a></li>
-		
-			<li><a href="/tags/IPMI/">IPMI<span>2</span></a></li>
+			<li><a href="/tags/out-of-band/">out-of-band<span>1</span></a></li>
 		
 			<li><a href="/tags/Linux/">Linux<span>2</span></a></li>
 		
-			<li><a href="/tags/oob/">oob<span>1</span></a></li>
-		
-			<li><a href="/tags/PXE/">PXE<span>1</span></a></li>
-		
 			<li><a href="/tags/DHCP/">DHCP<span>1</span></a></li>
+		
+			<li><a href="/tags/IPMI/">IPMI<span>2</span></a></li>
+		
+			<li><a href="/tags/datacenter/">datacenter<span>1</span></a></li>
+		
+			<li><a href="/tags/Dell/">Dell<span>1</span></a></li>
+		
+			<li><a href="/tags/oob/">oob<span>1</span></a></li>
 		
 			<li><a href="/tags/DataCenter/">DataCenter<span>1</span></a></li>
 		
-			<li><a href="/tags/Dell/">Dell<span>1</span></a></li>
+			<li><a href="/tags/lifecycle/">lifecycle<span>1</span></a></li>
+		
+			<li><a href="/tags/Cobbler/">Cobbler<span>1</span></a></li>
+		
+			<li><a href="/tags/provisioning/">provisioning<span>1</span></a></li>
+		
+			<li><a href="/tags/PXE/">PXE<span>1</span></a></li>
 		
 		 
 		</ul>
@@ -225,7 +239,11 @@
   <ul class="entry list-unstyled">
     
       <li>
-        <a href="/2014/11/12/out-of-band-management/" ><i class="fa fa-file-o"></i>数据中心带外管理</a>
+        <a href="/2014/11/18/lifecycle-management/" ><i class="fa fa-file-o"></i>数据中心服务器生命周期管理</a>
+      </li>
+    
+      <li>
+        <a href="/2014/11/12/out-of-band-management/" ><i class="fa fa-file-o"></i>数据中心服务器自动交付及带外管理</a>
       </li>
     
       <li>

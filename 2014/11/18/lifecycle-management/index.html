@@ -3,13 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>0xklx</title>
+  <title>数据中心服务器生命周期管理 | 0xklx</title>
   <meta name="author" content="Kong Luoxing">
+  
+  <meta name="description" content="英文标题：Data Center Server Lifecycle Management
+首先我定义生命周期包含几个阶段：服务开通-&amp;gt;交付、维护-&amp;gt;下架这里所指的服务开通，指的是服务器从上架到交付使用的全过程。
+概述
+服务开通由几个步骤组成：上架-&amp;gt;初始配置-&amp;gt;信息登记-&amp;g">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  
+  <meta property="og:title" content="数据中心服务器生命周期管理"/>
   <meta property="og:site_name" content="0xklx"/>
 
   
@@ -93,42 +98,28 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 
   <div class="container">
   	<div class="content">
-    	 <div class="page-header">
-  <h1>0xklx</h1>
-</div>
+    	 
 
-<div class="row page">
 
+	
+		<div class="page-header">		
+			<h1> 数据中心服务器生命周期管理</h1>
+		</div>		
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
 	
 	<div class="col-md-9">
 	
 
-		<div class="slogan">
-      <i class="fa fa-heart"></i>
-      Code wins arguements
-</div>    
-
-		<div class="mypage">
-		
-		<!-- title and entry -->
-		
 			
-	
-	<!-- display as entry -->
-		<h3 class="title">
-			<a href="/2014/11/18/lifecycle-management/" >数据中心服务器生命周期管理</a>
-			<span class="date"> Nov 18 2014 </span>
-		</h3>
-	
 
-
-			<div class="entry">
-  <div class="row">
-  
-	<div class="col-md-12">
-	  
-	
-	  <p>英文标题：Data Center Server Lifecycle Management</p>
+	<!-- content -->
+	<div class="mypage">		
+	    <p>英文标题：Data Center Server Lifecycle Management</p>
 <p>首先我定义生命周期包含几个阶段：服务开通-&gt;交付、维护-&gt;下架<br>这里所指的服务开通，指的是服务器从上架到交付使用的全过程。</p>
 <h1 id="概述">概述</h1>
 <p>服务开通由几个步骤组成：上架-&gt;初始配置-&gt;信息登记-&gt;自动装机-&gt;交付。<br><strong> 上架 </strong>指专门人员（通常指Siteops）将指定设备放置到指定机架位置上，并加电，连接好网线；<br><strong> 初始配置 </strong>指配置带外管理IP，以及用户密码等；<br><strong> 信息登记 </strong>指扫描RFID，并录入以上两部实际完成内容。此步骤完成后，设备已完成纳管，应在CMDB中保存有足够的信息来识别和定位该设备；<br><strong> 自动装机 </strong>指自动将操作系统部署到目标设备上，并进行初始化，如网络设置，磁盘分配等，这也是整个流程中最为重要的部分；<br><strong> 交付 </strong>指交付业务系统进行最后的配置，此时系统已经可以使用；</p>
@@ -147,183 +138,79 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 <h2 id="自动装机">自动装机</h2>
 <p>装机完成后，将主机标记为已安装操作系统（installed）。</p>
 <h2 id="带外管理">带外管理</h2>
-
-	
-	</div>
-	
-  
-</div>
-	<a type="button" href="/2014/11/18/lifecycle-management/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-		<h3 class="title">
-			<a href="/2014/11/12/out-of-band-management/" >数据中心服务器自动交付及带外管理</a>
-			<span class="date"> Nov 12 2014 </span>
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-  
-	<div class="col-md-12">
 	  
-	
-	  <div class="alert alert-success"><i class="fa fa-lightbulb-o"></i>  <p>本文介绍了数据中心自动装机以及带外管理等的设想。</p>
-</div>
-
-<h1 id="总体构思">总体构思</h1>
-<p><img src="http://kongluoxing.qiniudn.com/oob_management_summary.png" alt="总体逻辑图"><br>
-	
 	</div>
-	
-  
-</div>
-	<a type="button" href="/2014/11/12/out-of-band-management/#more" class="btn btn-default more">Read More</a>
-</div>
 
-		
-			
-	
-	<!-- display as entry -->
-		<h3 class="title">
-			<a href="/2014/11/11/ipmi/" >ipmi笔记</a>
-			<span class="date"> Nov 11 2014 </span>
-		</h3>
-	
-
-
-			<div class="entry">
-  <div class="row">
-  
-	<div class="col-md-12">
-	  
-	
-	  <h1 id="介绍">介绍</h1>
-<p>wikipedia上是这么介绍ipmi的：<br>The Intelligent Platform Management Interface (IPMI) is a set of computer interface specifications for an autonomous computer subsystem that provides management and monitoring capabilities independently of the host system’s CPU, firmware (BIOS or UEFI) and operating system. IPMI defines a set of interfaces used by system administrators for out-of-band management of computer systems and monitoring of their operation. For example, IPMI provides a way to manage a computer that may be powered off or otherwise unresponsive by using a network connection to the hardware rather than to an operating system or login shell.</p>
-
-	
-	</div>
-	
-  
-</div>
-	<a type="button" href="/2014/11/11/ipmi/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
-
-		</div>
-
-		<!-- pagination -->
-		<div>
-  		<center>
-		<div class="pagination">
+	<div>
+  	<center>
+	<div class="pagination">
 <ul class="pagination">
 	 
+		
+          <li class="prev disabled"><a><i class="fa fa-arrow-circle-o-left"></i>Prev</a></li>
+        
+
+        <li><a href="/archives"><i class="fa fa-archive"></i>Archive</a></li>
+
+		
+		   <li class="next"><a href="/2014/11/12/out-of-band-management/" class="alignright next">Next<i class="fa fa-arrow-circle-o-right"></i></a></li>         
+        
+	
 </ul>
 </div>
 
-  		</center>
-		</div>
-
-		
-		
-	</div> <!-- col-md-9 -->
-
-	
-		<div class="col-md-3">
-	<div id="sidebar">
-	
-			<div class="form-group has-success has-feedback">
-  <form action="//google.com/search" method="get" accept-charset="utf-8" >
-    <input type="search" name="q" results="0" placeholder="Search" class="form-control">
-    <input type="hidden" name="q" value="site:k-research.net">	
-  </form>
-</div>
-
-		
-			
-		
-			
-	<div class="widget">
-		<h4>Tag Cloud</h4>
-		<ul class="tag_box inline list-unstyled">		
-		
-			<li><a href="/tags/PXE/">PXE<span>1</span></a></li>
-		
-			<li><a href="/tags/lifecycle/">lifecycle<span>1</span></a></li>
-		
-			<li><a href="/tags/DataCenter/">DataCenter<span>1</span></a></li>
-		
-			<li><a href="/tags/IPMI/">IPMI<span>2</span></a></li>
-		
-			<li><a href="/tags/provisioning/">provisioning<span>1</span></a></li>
-		
-			<li><a href="/tags/oob/">oob<span>1</span></a></li>
-		
-			<li><a href="/tags/datacenter/">datacenter<span>1</span></a></li>
-		
-			<li><a href="/tags/DHCP/">DHCP<span>1</span></a></li>
-		
-			<li><a href="/tags/out-of-band/">out-of-band<span>1</span></a></li>
-		
-			<li><a href="/tags/Cobbler/">Cobbler<span>1</span></a></li>
-		
-			<li><a href="/tags/Dell/">Dell<span>1</span></a></li>
-		
-			<li><a href="/tags/Linux/">Linux<span>2</span></a></li>
-		
-		 
-		</ul>
+    </center>
 	</div>
+	
+	<!-- comment -->
+	
+<section id="comment">
+  <h2 class="title">Comments</h2>
 
+  
+</section>
 
+	
+	</div> <!-- col-md-9/col-md-12 -->
+	
+	
+		<div class="col-md-3"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	Nov 18 2014 
+	</div>
+	
+
+	<!-- categories -->
+    
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/provisioning/">provisioning<span>1</span></a></li> <li><a href="/tags/lifecycle/">lifecycle<span>1</span></a></li> <li><a href="/tags/out-of-band/">out-of-band<span>1</span></a></li> <li><a href="/tags/datacenter/">datacenter<span>1</span></a></li>
+    </ul>
+	</div>
 		
-			
-<div class="widget">
-  <h4>Recent Posts</h4>
-  <ul class="entry list-unstyled">
-    
-      <li>
-        <a href="/2014/11/18/lifecycle-management/" ><i class="fa fa-file-o"></i>数据中心服务器生命周期管理</a>
-      </li>
-    
-      <li>
-        <a href="/2014/11/12/out-of-band-management/" ><i class="fa fa-file-o"></i>数据中心服务器自动交付及带外管理</a>
-      </li>
-    
-      <li>
-        <a href="/2014/11/11/ipmi/" ><i class="fa fa-file-o"></i>ipmi笔记</a>
-      </li>
-    
-  </ul>
-</div>
 
-		
-			
-<div class="widget">
-	<h4>Links</h4>
-	<ul class="blogroll list-unstyled">
+	<!-- toc -->
+	<div class="meta-widget">
 	
-		<li><i class="fa fa-github"></i><a href="https://github.com/wzpan/freemind/" title="Freemind's Github repository." target="_blank"]);">Freemind</a></li>
+	</div>
 	
-		<li><i class="fa fa-github"></i><a href="https://github.com/kongluoxing" title="My Github account." target="_blank"]);">My Github</a></li>
+    <hr>
 	
-	</ul>
-</div>
-
-
-		
-	</div> <!-- sidebar -->
-</div> <!-- col-md-3 -->
+</div><!-- col-md-3 -->
 
 	
-	
-</div> <!-- row-fluid -->
+
+</div><!-- row -->
+
 	</div>
   </div>
   <div class="container-narrow">
