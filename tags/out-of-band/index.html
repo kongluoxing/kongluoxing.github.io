@@ -114,7 +114,7 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 	
 	<!-- display as entry -->
 		<h3 class="title">
-			<a href="/2014/11/18/lifecycle-management/" >数据中心服务器生命周期管理</a>
+			<a href="/2014/11/18/lifecycle-management/" title="从上架到服务开通到下架，全面描述了数据中心中服务器的生命周期管理。">数据中心服务器生命周期管理</a>
 			<span class="date"> Nov 18 2014 </span>
 		</h3>
 	
@@ -129,23 +129,12 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 	  <p>英文标题：Data Center Server Lifecycle Management</p>
 <p>首先我定义生命周期包含几个阶段：服务开通-&gt;交付、维护-&gt;下架<br>这里所指的服务开通，指的是服务器从上架到交付使用的全过程。</p>
 <h1 id="概述">概述</h1>
-<p>服务开通由几个步骤组成：上架-&gt;初始配置-&gt;信息登记-&gt;自动装机-&gt;交付。<br><strong> 上架 </strong>指专门人员（通常指Siteops）将指定设备放置到指定机架位置上，并加电，连接好网线；<br><strong> 初始配置 </strong>指配置带外管理IP，以及用户密码等；<br><strong> 信息登记 </strong>指扫描RFID，并录入以上两部实际完成内容。此步骤完成后，设备已完成纳管，应在CMDB中保存有足够的信息来识别和定位该设备；<br><strong> 自动装机 </strong>指自动将操作系统部署到目标设备上，并进行初始化，如网络设置，磁盘分配等，这也是整个流程中最为重要的部分；<br><strong> 交付 </strong>指交付业务系统进行最后的配置，此时系统已经可以使用；</p>
+<p>服务开通由几个步骤组成：上架-&gt;初始配置-&gt;信息登记-&gt;自动装机-&gt;交付。<br><strong> 上架 </strong>指专门人员（通常指<a href="http://beijing.myjob.com/job/11-15240822.html" target="_blank" rel="external">Siteops</a>）将指定设备放置到指定机架位置上，并加电，连接好网线；<br><strong> 初始配置 </strong>指配置带外管理IP，以及用户密码等；<br><strong> 信息登记 </strong>指扫描RFID，并录入以上两部实际完成内容。此步骤完成后，设备已完成纳管，应在CMDB中保存有足够的信息来识别和定位该设备；<br><strong> 自动装机 </strong>指自动将操作系统部署到目标设备上，并进行初始化，如网络设置，磁盘分配等，这也是整个流程中最为重要的部分；<br><strong> 交付 </strong>指交付业务系统进行最后的配置，此时系统已经可以使用；</p>
 <p>网络拓扑：</p>
 <p><img src="http://kongluoxing.qiniudn.com/datacenter-lifecycle-topology.png" alt="网络拓扑"></p>
-<h2 id="前提条件">前提条件</h2>
-<p>要实现完全的服务开通自动化，需要满足以下前提条件：<br>设备需支持IPMI 1.5或IPMI 2.0规范并带有独立带外管理网口以实现带外管理；<br>设备需支持PXE以实现网络启动；<br>设备需同时连接到管理网和生产网；<br>设备所安装系统应当是完全兼容的，不能有缺少驱动等情况；<br>在大规模部署中，应在各子网设DHCP中继；</p>
-<h1 id="系统实现">系统实现</h1>
-<p>为应对数据中心的大量设备的自动化需求，系统采用的实现方案详细如下:  </p>
-<h2 id="组件及其关联">组件及其关联</h2>
-<p>系统由以下组件组成：<br><strong> 装机服务器 </strong>是提供自动装机服务的主要服务器，其提供镜像、安装文件分发、设备管理（包括分类管理、规则设置等）等功能；<br><strong> DHCP服务器 </strong>是专门用于给目标机器自动分配IP地址的服务器，因冲突域的限制，需要在各子网设DHCP中继才能实现多子网的DHCP功能；<br><strong> 控制服务器 </strong>是用来收集整理装机服务器的信息，给装机服务器分派指令，与ITSM系统通信等的服务器；<br><strong> ITSM服务器 </strong>指现有ITSM系统。<br>以下介绍各功能点。</p>
-<h2 id="自动发现">自动发现</h2>
-<p>自动发现的实现机制是，当新上架机器启动后，自动通过PXE连接到装机服务器，然后通过网络启动一个定制的操作系统，该操作系统自带一个报告程序，<br>用于定时向装机服务器汇报自身情况，例如：各网卡MAC地址、服务器UUID、是否虚拟化、CPU配置、内存配置、序列号等等。当装机服务器收到数据后，<br>自动将此机器置为已登记状态，ITSM提供界面将发现的机器与在信息登记阶段登记的机器进行关联，此时，机器就具备了完整的配置信息，<br>带内带外的信息以及机房位置信息也全部关联补齐。</p>
-<h2 id="命名、标签及规则">命名、标签及规则</h2>
-<p>自动发现的主机自动命名，node1，node2等。可创建规则来为主机自动添加标签</p>
-<h2 id="自动装机">自动装机</h2>
-<p>装机完成后，将主机标记为已安装操作系统（installed）。</p>
-<h2 id="带外管理">带外管理</h2>
-
+<p><strong> 图解 </strong><br>所有服务器都同时连接到管理网和生产网，其中管理口连接到管理网，普通网口连接到生产网，流量分开互不干扰；管理网和生产网亦不共享网络设备，<br>以保证在生产网故障需要维护时，管理网仍然可用。</p>
+<h2 id="各阶段定义">各阶段定义</h2>
+<p><img src="http://kongluoxing.qiniudn.com/oob_management_summary.png" alt="总体逻辑图"><br>
 	
 	</div>
 	
@@ -184,33 +173,44 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 
 		
 			
+	<div class="widget">
+		<h4>Categories</h4>
+		<ul class="tag_box inline list-unstyled">
+		
+			<li><a href="/categories/Provisioning/">Provisioning<span>1</span></a></li>
+		
+		</ul>
+	</div>
+
 		
 			
 	<div class="widget">
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/Dell/">Dell<span>1</span></a></li>
-		
 			<li><a href="/tags/oob/">oob<span>1</span></a></li>
 		
-			<li><a href="/tags/out-of-band/">out-of-band<span>1</span></a></li>
-		
-			<li><a href="/tags/DHCP/">DHCP<span>1</span></a></li>
-		
-			<li><a href="/tags/IPMI/">IPMI<span>2</span></a></li>
+			<li><a href="/tags/razor/">razor<span>1</span></a></li>
 		
 			<li><a href="/tags/datacenter/">datacenter<span>1</span></a></li>
+		
+			<li><a href="/tags/DHCP/">DHCP<span>1</span></a></li>
 		
 			<li><a href="/tags/Cobbler/">Cobbler<span>1</span></a></li>
 		
 			<li><a href="/tags/lifecycle/">lifecycle<span>1</span></a></li>
 		
-			<li><a href="/tags/provisioning/">provisioning<span>1</span></a></li>
-		
-			<li><a href="/tags/PXE/">PXE<span>1</span></a></li>
+			<li><a href="/tags/IPMI/">IPMI<span>2</span></a></li>
 		
 			<li><a href="/tags/DataCenter/">DataCenter<span>1</span></a></li>
+		
+			<li><a href="/tags/provisioning/">provisioning<span>1</span></a></li>
+		
+			<li><a href="/tags/out-of-band/">out-of-band<span>1</span></a></li>
+		
+			<li><a href="/tags/Dell/">Dell<span>1</span></a></li>
+		
+			<li><a href="/tags/PXE/">PXE<span>1</span></a></li>
 		
 			<li><a href="/tags/Linux/">Linux<span>2</span></a></li>
 		
@@ -226,7 +226,7 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
   <ul class="entry list-unstyled">
     
       <li>
-        <a href="/2014/11/18/lifecycle-management/" ><i class="fa fa-file-o"></i>数据中心服务器生命周期管理</a>
+        <a href="/2014/11/18/lifecycle-management/"  title="从上架到服务开通到下架，全面描述了数据中心中服务器的生命周期管理。" ><i class="fa fa-file-o"></i>数据中心服务器生命周期管理</a>
       </li>
     
       <li>
