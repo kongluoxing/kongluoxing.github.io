@@ -129,16 +129,25 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 	  
 	
 	  <p>英文标题：Data Center Server Lifecycle Management</p>
-<p>首先我定义生命周期包含几个阶段：服务开通-&gt;交付、维护-&gt;下架<br>这里所指的服务开通，指的是服务器从上架到交付使用的全过程。</p>
+<p>首先我定义生命周期包含几个阶段：服务开通-&gt;交付、维护-&gt;下架
+这里所指的服务开通，指的是服务器从上架到交付使用的全过程。</p>
 <h1 id="概述">概述</h1>
-<p>服务开通由几个步骤组成：上架-&gt;初始配置-&gt;信息登记-&gt;自动装机-&gt;交付。<br><strong> 上架 </strong>指专门人员（通常指<a href="http://beijing.myjob.com/job/11-15240822.html" target="_blank" rel="external">Siteops</a>）将指定设备放置到指定机架位置上，并加电，连接好网线；<br><strong> 初始配置 </strong>指配置带外管理IP，以及用户密码等；<br><strong> 信息登记 </strong>指扫描RFID，并录入以上两部实际完成内容。此步骤完成后，设备已完成纳管，应在CMDB中保存有足够的信息来识别和定位该设备；<br><strong> 自动装机 </strong>指自动将操作系统部署到目标设备上，并进行初始化，如网络设置，磁盘分配等，这也是整个流程中最为重要的部分；<br><strong> 交付 </strong>指交付业务系统进行最后的配置，此时系统已经可以使用；</p>
+<p>服务开通由几个步骤组成：上架-&gt;初始配置-&gt;信息登记-&gt;自动装机-&gt;交付。
+<strong> 上架 </strong>指专门人员（通常指<a href="http://beijing.myjob.com/job/11-15240822.html" target="_blank" rel="external">Siteops</a>）将指定设备放置到指定机架位置上，并加电，连接好网线；
+<strong> 初始配置 </strong>指配置带外管理IP，以及用户密码等；
+<strong> 信息登记 </strong>指扫描RFID，并录入以上两部实际完成内容。此步骤完成后，设备已完成纳管，应在CMDB中保存有足够的信息来识别和定位该设备；
+<strong> 自动装机 </strong>指自动将操作系统部署到目标设备上，并进行初始化，如网络设置，磁盘分配等，这也是整个流程中最为重要的部分；
+<strong> 交付 </strong>指交付业务系统进行最后的配置，此时系统已经可以使用；</p>
 <!-- more -->
 
 <p>网络拓扑：</p>
 <p><img src="http://kongluoxing.qiniudn.com/datacenter-lifecycle-topology.png" alt="网络拓扑"></p>
-<p><strong> 图解 </strong><br>所有服务器都同时连接到管理网和生产网，其中管理口连接到管理网，普通网口连接到生产网，流量分开互不干扰；管理网和生产网亦不共享网络设备，<br>以保证在生产网故障需要维护时，管理网仍然可用。</p>
+<p><strong> 图解 </strong>
+所有服务器都同时连接到管理网和生产网，其中管理口连接到管理网，普通网口连接到生产网，流量分开互不干扰；管理网和生产网亦不共享网络设备，
+以保证在生产网故障需要维护时，管理网仍然可用。</p>
 <h2 id="各阶段定义">各阶段定义</h2>
-<p><img src="http://kongluoxing.qiniudn.com/oob_management_summary.png" alt="总体逻辑图"><br>
+<p><img src="http://kongluoxing.qiniudn.com/oob_management_summary.png" alt="总体逻辑图">
+
 	
 	</div>
 	
@@ -192,31 +201,31 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/DataCenter/">DataCenter<span>1</span></a></li>
+			<li><a href="/tags/Linux/">Linux<span>1</span></a></li>
 		
-			<li><a href="/tags/PXE/">PXE<span>1</span></a></li>
+			<li><a href="/tags/DataCenter/">DataCenter<span>0</span></a></li>
 		
-			<li><a href="/tags/oob/">oob<span>1</span></a></li>
-		
-			<li><a href="/tags/out-of-band/">out-of-band<span>1</span></a></li>
-		
-			<li><a href="/tags/razor/">razor<span>1</span></a></li>
-		
-			<li><a href="/tags/DHCP/">DHCP<span>1</span></a></li>
-		
-			<li><a href="/tags/IPMI/">IPMI<span>2</span></a></li>
-		
-			<li><a href="/tags/lifecycle/">lifecycle<span>1</span></a></li>
-		
-			<li><a href="/tags/Cobbler/">Cobbler<span>1</span></a></li>
+			<li><a href="/tags/DHCP/">DHCP<span>0</span></a></li>
 		
 			<li><a href="/tags/Dell/">Dell<span>1</span></a></li>
 		
-			<li><a href="/tags/provisioning/">provisioning<span>1</span></a></li>
+			<li><a href="/tags/razor/">razor<span>1</span></a></li>
 		
-			<li><a href="/tags/Linux/">Linux<span>2</span></a></li>
+			<li><a href="/tags/PXE/">PXE<span>0</span></a></li>
 		
 			<li><a href="/tags/datacenter/">datacenter<span>1</span></a></li>
+		
+			<li><a href="/tags/IPMI/">IPMI<span>1</span></a></li>
+		
+			<li><a href="/tags/Cobbler/">Cobbler<span>0</span></a></li>
+		
+			<li><a href="/tags/provisioning/">provisioning<span>1</span></a></li>
+		
+			<li><a href="/tags/lifecycle/">lifecycle<span>1</span></a></li>
+		
+			<li><a href="/tags/out-of-band/">out-of-band<span>1</span></a></li>
+		
+			<li><a href="/tags/oob/">oob<span>0</span></a></li>
 		
 		 
 		</ul>
@@ -231,10 +240,6 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
     
       <li>
         <a href="/2014/11/18/lifecycle-management/"  title="从上架到服务开通到下架，全面描述了数据中心中服务器的生命周期管理。" ><i class="fa fa-file-o"></i>数据中心服务器生命周期管理</a>
-      </li>
-    
-      <li>
-        <a href="/2014/11/12/out-of-band-management/" ><i class="fa fa-file-o"></i>数据中心服务器自动交付及带外管理</a>
       </li>
     
       <li>
