@@ -116,6 +116,99 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 	
 	<!-- display as entry -->
 		<h3 class="title">
+			<a href="/2014/11/18/auto_install/" title="上架及自动装机需求分析">自动装机需求分析</a>
+			<span class="date"> Nov 18 2014 </span>
+		</h3>
+	
+
+
+	  <div class="entry">
+  <div class="row">
+  
+	<div class="col-md-12">
+	  
+	
+	  <h1 id="基本概念">基本概念</h1>
+<p><strong>Node</strong></p>
+<p>一个节点就是一台主机，节点包含其配置信息，以及日志等</p>
+<p><strong>Repo</strong></p>
+<p>仓库定义了安装文件的来源（iso http），安装的过程（task），系统预置了一些task，如CentOS，Ubuntu，Windows2012等。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="code">+------------+</span>-----------------------------------------------------------------------------<span class="code">+-----+</span>--------+</div><div class="line"><span class="header">| name       | iso_url                                                                     | url | task   |</span></div><div class="line">+------------+-----------------------------------------------------------------------------+-----+--------+</div><div class="line">| centos-6.2 | file:///data/CentOS-6.2-x86<span class="emphasis">_64-bin-DVD1.iso                                 | --- | centos |</span></div><div class="line">| centos-6.4 | http://mirrors.163.com/centos/6.6/isos/x86_64/CentOS-6.6-x86<span class="emphasis">_64-minimal.iso | --- | centos |</span></div><div class="line">+------------+-----------------------------------------------------------------------------+-----+--------+</div></pre></td></tr></table></figure>
+
+<p><strong>Tag</strong></p>
+<p>标签，用于组织和管理设备，使其方便检索，一个主机可以拥有一个或多个标签。标签对象包含一个名字和一个规则，规则使主机对象可以据此进行匹配。ex：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">+------+----------------------------------------------------+-------+----------+</div><div class="line"><span class="localvars">| name | rule                                               | nodes | policies |</span></div><div class="line">+------+----------------------------------------------------+-------+----------+</div><div class="line"><span class="localvars">| test |</span> [<span class="comment">"="</span>, [<span class="comment">"fact"</span>, <span class="comment">"macaddress"</span>], <span class="comment">"00:0c:29:c3:53:f0"</span>] | <span class="number">1</span>     | <span class="number">1</span>        |</div><div class="line">+------+----------------------------------------------------+-------+----------+</div></pre></td></tr></table></figure>
+
+<p>以上规则使MAC地址为00:0c:29:c3:53:f0的主机，会匹配此标签规则，被打上test的标签。</p>
+<p>详细规则见此链接：<a href="https://github.com/puppetlabs/razor-server/wiki/Tags" target="_blank" rel="external">标签</a></p>
+<p><strong>Policy</strong></p>
+<p>策略，用于将Tag、broker、repo等捆绑到一起，使其组成一个完整的策略，可以描述一个场景：
+给标签为xx的主机，安装repo所描述的系统，系统装完后安装xx broker。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="code">+-------------+</span>------------<span class="code">+--------+</span>--------<span class="code">+---------+</span>-----------<span class="code">+------+</span>-------+</div><div class="line"><span class="header">| name        | repo       | task   | broker | enabled | max_count | tags | nodes |</span></div><div class="line">+-------------+------------+--------+--------+---------+-----------+------+-------+</div><div class="line"><span class="header">| test_policy | centos-6.2 | centos | puppet | true    | 20        | test | 1     |</span></div><div class="line">+-------------+------------+--------+--------+---------+-----------+------+-------+</div></pre></td></tr></table></figure>
+
+<h1 id="功能需求">功能需求</h1>
+<h2 id="自动发现界面">自动发现界面</h2>
+<p>菜单位于：生命周期管理-&gt;自动发现</p>
+<p><strong>业务逻辑</strong></p>
+<p>当机器上架后，机器应当已经加电，理想情况此时应当开机。开机后系统即可自动发现该主机，及其配置信息，此时可对发现的机器，进行配置核对。</p>
+<p><strong>界面功能</strong></p>
+<p>界面展示自动发现的机器，显示为一个列表，并展示以下字段：名称、CI ID、dhcp mac、dhcp ip、status、last checkin、tags、CPU count、memory、virtual、policy
+第一排序字段为status，<code>未装机</code>在前，第二排序字段为last_checkin:
+<img src="http://kongluoxing.qiniudn.com/discovery_list.png" alt="自动发现列表">
+界面可配置每x秒自动刷新。数据取自数据库，后台跑定时任务将数据从razor导入到数据库。</p>
+<p><strong>列表逻辑</strong></p>
+<ul>
+<li>列表中status为<code>已装机</code>和<code>未开机</code>的主机，禁用选择框。其中已装机和未装机的数据来自于razor，而未开机的数据则来自于CMDB中存在，然而未能在自动发现中匹配的机器。</li>
+<li>点击操作列的日志显示一个弹出层展示日志信息</li>
+<li>CI ID是机器自动关联到CMDB后，展示的CI ID，CI ID要可以点击转向CMDB页面</li>
+<li>virtual字段在机器为物理机的时候显示No，在机器为虚拟机的时候显示对应的虚拟化技术</li>
+<li>单选或多选底部均弹出工具栏，详见webarch，工具栏显示一个按钮：开始装机，点击后弹出层显示向导</li>
+</ul>
+<p><strong>装机向导</strong></p>
+<p>向导使用webarch控件:
+<img src="http://kongluoxing.qiniudn.com/form_wizard.png" alt="向导控件"></p>
+<p>装机向导总共分以下几步：</p>
+<ol>
+<li>标题：创建批次号 系统自动生成一个批次号，用户确认后进行下一步</li>
+<li>标题：创建装机策略 包含几个文本框输入：名字（自动生成，批次号+标示符），操作系统：下拉框选择，主机名策略：默认node${id}，root密码：随机字符串（按照一定规则生成），应用于标签：自动带入批次号</li>
+<li>标题，完成，提示用户关注自动发现列表中tag和policy列的变化，另外可查看日志</li>
+</ol>
+<h2 id="装机策略管理">装机策略管理</h2>
+<p>菜单位于：生命周期管理-&gt;装机策略管理</p>
+<p><strong>业务逻辑</strong></p>
+<p>用于增删改标签、仓库、策略。自动发现界面所创建的标签和策略都是临时使用的，用于手动安装一批机器，这里创建的标签和策略等则是永久存在的，其意义在于无人工介入的情况下进行自动分类和装机。
+例如自动给戴尔的机器增加dell的tag，自动给虚拟机增加vm的tag等。而仓库则是预设的一些操作系统镜像等。策略在数据中心高度统一化的时候意义重大，它可以实现机器上架、开机就立即进行定制化装机，
+而不需要人工介入。例如自动给戴尔机器安装戴尔定制操作系统。在现阶段不推荐自动安装，推荐在自动发现界面使用装机向导安装。</p>
+<p><strong>界面功能</strong></p>
+<p>左边显示三个列表：标签规则、镜像仓库、装机策略</p>
+<h3 id="标签规则">标签规则</h3>
+<p>显示以下表格：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">+------+----------------------------------------------------+-------+----------+</div><div class="line"><span class="localvars">| name | rule                                               | nodes | policies |</span></div><div class="line">+------+----------------------------------------------------+-------+----------+</div><div class="line"><span class="localvars">| test |</span> [<span class="comment">"="</span>, [<span class="comment">"fact"</span>, <span class="comment">"macaddress"</span>], <span class="comment">"00:0c:29:c3:53:f0"</span>] | <span class="number">1</span>     | <span class="number">1</span>        |</div><div class="line">+------+----------------------------------------------------+-------+----------+</div></pre></td></tr></table></figure>
+
+<p>顶部显示创建标签规则按钮，点击弹出框，用户需填入name和rule，点击确定完成创建。</p>
+<h3 id="镜像仓库">镜像仓库</h3>
+<p>显示以下表格</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">+------------+-----------------------------------------------------------------------------+-----+--------+-----------+</div><div class="line"><span class="localvars">| name       | iso_url                                                                     | url | task   | status    |</span></div><div class="line">+------------+-----------------------------------------------------------------------------+-----+--------+-----------+</div><div class="line">| centos-<span class="number">6.2</span> | <span class="method">file:</span>///data/<span class="class">CentOS</span>-<span class="number">6.2</span>-x86_64-bin-<span class="class">DVD1</span>.iso                                 | --- <span class="localvars">| centos | complete  |</span></div><div class="line">| centos-<span class="number">6.4</span> | <span class="method">http:</span>//mirrors<span class="number">.163</span>.com/centos/<span class="number">6.6</span>/isos/x86_64/<span class="class">CentOS</span>-<span class="number">6.6</span>-x86_64-minimal.iso | --- <span class="localvars">| centos | pending   |</span></div><div class="line">+------------+-----------------------------------------------------------------------------+-----+--------+-----------+</div></pre></td></tr></table></figure>
+
+<p>顶部显示创建镜像仓库按钮，用户需填写name，iso_url和task(下拉框)完成创建。</p>
+<h3 id="装机策略">装机策略</h3>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="code">+-------------+</span>------------<span class="code">+--------+</span>--------<span class="code">+---------+</span>-----------<span class="code">+------+</span>-------+</div><div class="line"><span class="header">| name        | repo       | task   | broker | enabled | max_count | tags | nodes |</span></div><div class="line">+-------------+------------+--------+--------+---------+-----------+------+-------+</div><div class="line"><span class="header">| test_policy | centos-6.2 | centos | puppet | true    | 20        | test | 1     |</span></div><div class="line">+-------------+------------+--------+--------+---------+-----------+------+-------+</div></pre></td></tr></table></figure>
+
+<p>顶部显示创建装机策略按钮，用户需填写name，选择repo，择填写tags完成创建。</p>
+
+	
+	</div>
+	
+  
+</div>
+	<a type="button" href="/2014/11/18/auto_install/#more" class="btn btn-default more">Read More</a>
+</div>
+	  
+	  
+	  
+	
+	<!-- display as entry -->
+		<h3 class="title">
 			<a href="/2014/11/18/lifecycle-management/" title="从上架到服务开通到下架，全面描述了数据中心中服务器的生命周期管理。">数据中心服务器生命周期管理</a>
 			<span class="date"> Nov 18 2014 </span>
 		</h3>
@@ -132,21 +225,8 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 <p>首先我定义生命周期包含几个阶段：服务开通-&gt;交付、维护-&gt;下架
 这里所指的服务开通，指的是服务器从上架到交付使用的全过程。</p>
 <h1 id="概述">概述</h1>
-<p>服务开通由几个步骤组成：上架-&gt;初始配置-&gt;信息登记-&gt;自动装机-&gt;交付。
-<strong> 上架 </strong>指专门人员（通常指<a href="http://beijing.myjob.com/job/11-15240822.html" target="_blank" rel="external">Siteops</a>）将指定设备放置到指定机架位置上，并加电，连接好网线；
-<strong> 初始配置 </strong>指配置带外管理IP，以及用户密码等；
-<strong> 信息登记 </strong>指扫描RFID，并录入以上两部实际完成内容。此步骤完成后，设备已完成纳管，应在CMDB中保存有足够的信息来识别和定位该设备；
-<strong> 自动装机 </strong>指自动将操作系统部署到目标设备上，并进行初始化，如网络设置，磁盘分配等，这也是整个流程中最为重要的部分；
-<strong> 交付 </strong>指交付业务系统进行最后的配置，此时系统已经可以使用；</p>
-<!-- more -->
-
-<p>网络拓扑：</p>
-<p><img src="http://kongluoxing.qiniudn.com/datacenter-lifecycle-topology.png" alt="网络拓扑"></p>
-<p><strong> 图解 </strong>
-所有服务器都同时连接到管理网和生产网，其中管理口连接到管理网，普通网口连接到生产网，流量分开互不干扰；管理网和生产网亦不共享网络设备，
-以保证在生产网故障需要维护时，管理网仍然可用。</p>
-<h2 id="各阶段定义">各阶段定义</h2>
-<p><img src="http://kongluoxing.qiniudn.com/oob_management_summary.png" alt="总体逻辑图">
+<p>服务开通由几个步骤组成：上架-&gt;初始配置-&gt;信息登记-&gt;自动装机-&gt;交付。</p>
+<p><strong>上架</strong>指专门人员（通常指<a href="http://beijing.myjob.com/job/11-15240822.html" target="_blank" rel="external">Siteops</a>）将指定设备放置到指定机架位置上，并加电，连接好网线；<br><strong>初始配置</strong>指配置带外管理IP，以及用户密码等；<br><strong>信息登记</strong>指扫描RFID，并录入以上两部实际完成内容。此步骤完成后，设备已完成纳管，应在CMDB中保存有足够的信息来识别和定位该设备；<br><strong>自动装机</strong>指自动将操作系统部署到目标设备上，并进行初始化，如网络设置，磁盘分配等，这也是整个流程中最为重要的部分；<br><strong>交付</strong>指交付业务系统进行最后的配置，此时系统已经可以使用；  </p>
 
 	
 	</div>
@@ -190,7 +270,7 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 		<h4>Categories</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/Provisioning/">Provisioning<span>1</span></a></li>
+			<li><a href="/categories/Provisioning/">Provisioning<span>4</span></a></li>
 		
 		</ul>
 	</div>
@@ -201,31 +281,23 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/DataCenter/">DataCenter<span>0</span></a></li>
-		
-			<li><a href="/tags/razor/">razor<span>1</span></a></li>
-		
-			<li><a href="/tags/Linux/">Linux<span>1</span></a></li>
-		
 			<li><a href="/tags/IPMI/">IPMI<span>1</span></a></li>
 		
-			<li><a href="/tags/oob/">oob<span>0</span></a></li>
-		
-			<li><a href="/tags/out-of-band/">out-of-band<span>1</span></a></li>
-		
-			<li><a href="/tags/provisioning/">provisioning<span>1</span></a></li>
-		
-			<li><a href="/tags/PXE/">PXE<span>0</span></a></li>
+			<li><a href="/tags/lifecycle/">lifecycle<span>2</span></a></li>
 		
 			<li><a href="/tags/Dell/">Dell<span>1</span></a></li>
 		
-			<li><a href="/tags/Cobbler/">Cobbler<span>0</span></a></li>
+			<li><a href="/tags/provisioning/">provisioning<span>4</span></a></li>
 		
-			<li><a href="/tags/datacenter/">datacenter<span>1</span></a></li>
+			<li><a href="/tags/Linux/">Linux<span>2</span></a></li>
 		
-			<li><a href="/tags/DHCP/">DHCP<span>0</span></a></li>
+			<li><a href="/tags/cobbler/">cobbler<span>1</span></a></li>
 		
-			<li><a href="/tags/lifecycle/">lifecycle<span>1</span></a></li>
+			<li><a href="/tags/out-of-band/">out-of-band<span>2</span></a></li>
+		
+			<li><a href="/tags/datacenter/">datacenter<span>2</span></a></li>
+		
+			<li><a href="/tags/razor/">razor<span>3</span></a></li>
 		
 		 
 		</ul>
@@ -237,6 +309,18 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 <div class="widget">
   <h4>Recent Posts</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2014/11/21/cobbler-notes/"  title="Cobbler 心得" ><i class="fa fa-file-o"></i>Notes of Cobbler</a>
+      </li>
+    
+      <li>
+        <a href="/2014/11/21/razor-notes/"  title="Razor-Server 使用心得" ><i class="fa fa-file-o"></i>Notes of Razor</a>
+      </li>
+    
+      <li>
+        <a href="/2014/11/18/auto_install/"  title="上架及自动装机需求分析" ><i class="fa fa-file-o"></i>自动装机需求分析</a>
+      </li>
     
       <li>
         <a href="/2014/11/18/lifecycle-management/"  title="从上架到服务开通到下架，全面描述了数据中心中服务器的生命周期管理。" ><i class="fa fa-file-o"></i>数据中心服务器生命周期管理</a>
@@ -258,6 +342,8 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 		<li><i class="fa fa-github"></i><a href="https://github.com/wzpan/freemind/" title="Freemind's Github repository." target="_blank"]);">Freemind</a></li>
 	
 		<li><i class="fa fa-github"></i><a href="https://github.com/kongluoxing" title="My Github account." target="_blank"]);">My Github</a></li>
+	
+		<li><i class="fa fa-linkedin"></i><a href="https://www.linkedin.com/pub/%E7%BD%97%E6%98%9F-%E5%AD%94/a9/29a/436" title="My LinkedIn account" target="_blank"]);">My LinkedIn</a></li>
 	
 	</ul>
 </div>
